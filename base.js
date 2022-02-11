@@ -59,6 +59,17 @@ class Vector2D{
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
     }
 
+    setMagntude(value){
+        let adjust = this.getMagntude() / value;
+
+        if(adjust != 0) {
+            this.x /= adjust;
+            this.y /= adjust;
+        }
+
+        return this;
+    }
+
     getDirection(){
         let magntude = this.getMagntude();
         return new Vector2D(this.x / magntude, this.y / magntude);
@@ -105,7 +116,7 @@ class Bird{
     flocking(birds){
         let birdsInRadius = 0; 
         let steeringAlign = new Vector2D();
-        let steeringCoherte = new Vector2D();
+        let steeringCoherce = new Vector2D();
         let steeringSeparate = new Vector2D();
 
         for(let bird of birds){
@@ -113,21 +124,30 @@ class Bird{
                 birdsInRadius++;
 
                 steeringAlign.add(bird.velocity);
-                steeringCoherte.add(bird.position);
+                steeringCoherce.add(bird.position);
                 steeringSeparate.add(new Vector2D().subStatic(this.position, bird.position));
             }
         }
 
         if(birdsInRadius > 0){
-            steeringAlign.div(birdsInRadius).mult(ALIGN_FORCE/1000);
+            steeringAlign.div(birdsInRadius);
+            steeringAlign.setMagntude(MAX_VELOCITY);
+            steeringAlign.sub(this.velocity);
+            steeringAlign.mult(ALIGN_FORCE/1000);
 
-            steeringSeparate.div(birdsInRadius).mult(SEPARATE_FORCE/1000);
+            steeringSeparate.div(birdsInRadius)
+            steeringSeparate.setMagntude(MAX_VELOCITY);
+            steeringSeparate.sub(this.velocity);
+            steeringSeparate.mult(SEPARATE_FORCE/1000);
 
-            steeringCoherte.div(birdsInRadius);
-            steeringCoherte.sub(this.position).mult(COHERTE_FORCE/1000);
+            steeringCoherce.div(birdsInRadius);
+            steeringCoherce.sub(this.position);
+            steeringCoherce.setMagntude(MAX_VELOCITY);
+            steeringCoherce.sub(this.velocity);
+            steeringCoherce.mult(COHESION_FORCE/1000);
         }
 
-        this.acceleration = steeringAlign.add(steeringSeparate).add(steeringCoherte);
+        this.acceleration = steeringAlign.add(steeringSeparate).add(steeringCoherce);
 
     }
 

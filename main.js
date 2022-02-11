@@ -1,4 +1,4 @@
-var NUMBER_OF_BIRDS = 100, MAX_VELOCITY = 2, CHECK_RADIUS = 50, COHERTE_FORCE, ALIGN_FORCE, SEPARATE_FORCE;
+var NUMBER_OF_BIRDS = 100, MAX_VELOCITY = 5, CHECK_RADIUS = 500, COHESION_FORCE, ALIGN_FORCE, SEPARATE_FORCE;
 
 var flock = [];
 
@@ -14,7 +14,7 @@ function populateFlock(){
 function updateFlock(){
     let flockCopy = deepCopy(flock);
 
-    COHERTE_FORCE = document.getElementById("cohercion").value;
+    COHESION_FORCE = document.getElementById("cohesion").value;
     ALIGN_FORCE = document.getElementById("alignment").value;
     SEPARATE_FORCE = document.getElementById("separation").value;
     NUMBER_OF_BIRDS = document.getElementById("birds_number").value;
@@ -30,6 +30,8 @@ function updateFlock(){
 
     flock = flockCopy;
     draw(flock);
+
+    setTimeout(updateFlock, 1000/FPS);
 }
 
 function deepCopy(birdList){
@@ -49,4 +51,4 @@ function deepCopy(birdList){
 
 initialize();
 populateFlock();
-setInterval(updateFlock, 1000/FPS);
+updateFlock();
