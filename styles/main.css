@@ -1,9 +1,15 @@
+
+@font-face {
+    font-family: RobotoMono;
+    src: url(fonts/RobotoMono-Light.ttf);
+}
+
 body {
     margin: 0px;
 }
 
 .popup {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: RobotoMono;
     font-weight: bold;
     position: fixed;
     bottom: 0%;
